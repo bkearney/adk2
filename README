@@ -1,0 +1,31 @@
+This is some initial thinking around an appliance development kit.
+It is very rudimentary, and requires checkouts of the latest
+bits to function. But.. it is good enough to be criticized.
+
+SETUP
+=====
+* yum install pungi git hg
+* Install the ami tools from http://developer.amazonwebservices.com/connect/entry.jspa?externalID=368
+* change to the ADK_HOME directory
+* execute setup.sh
+* copy adk.yml.example to adk.yml
+* copy appliance.yml.example to appliance.yml
+* edit the yml file for more settings
+* su to root
+* change to the ADK_HOME directory
+* . ./adk.rc
+
+
+RUNNING
+=======
+Now you can run it. Some things you can do:
+adk list appliances : See the appliances
+adk list settings : See the settings
+adk list plugins: See the plugins 
+adk gather [APPLIANCE] : Download the src rpms for an appliance
+adk srciso [APPLIANCE] : Build source rpm isos for an appliance
+adk appliance [APPLIANCE] : Build the appliance
+
+
+NOTES / GOTCHAS
+===============
