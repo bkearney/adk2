@@ -1,0 +1,17 @@
+#general setup information
+output_directory: "/appliances"
+log_directory: "/appliances/logs"
+cache_directory: "/appliances/cache"
+temp_directory: "/tmp"
+ 
+# Amazon Information
+aws_private_key: "pk-XXXX.pem"
+aws_cert: "cert-XXXX.pem"
+aws_key: "XXXXX" 
+aws_secret_key: "XXXXX"
+aws_account_number: "XXXX"
+
+# The following is for cobbler integration
+cobbler_hostname: localhost
+cobbler_user: testing
+cobbler_password: testing
