@@ -21,8 +21,6 @@ def _get_appliances():
 		
 def load_appliances():
 	Appliance.appliances={}
-	print 1
-	print Appliance.appliances
 	appl_data = settings.load_appliances()
 	for appl, attributes in appl_data.iteritems():
 		new_appl = Appliance(appl)

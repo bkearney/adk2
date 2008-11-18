@@ -12,7 +12,7 @@ class ADK:
 		
 	def load_plugins(self):
 		# TODO: Make this dynamic
-		plugin_list = ["appcreate", "cobbler", "ec2", "init", "list", "gather", "srciso"]
+		plugin_list = ["appcreator", "cobbler", "ec2", "init", "list", "gather", "srciso"]
 		self.plugins={}
 		for plug in plugin_list:
 			plugin_module = __import__("plugins.%s" % (plug), globals(), locals(), [plug])

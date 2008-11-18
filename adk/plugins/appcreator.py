@@ -9,7 +9,7 @@ import imgcreate
 import logging
 
 
-class AppliancePlugin(ADKPlugin):
+class AppcreatorPlugin(ADKPlugin):
 	def name(self):
 		return "appliance"
 		
@@ -19,23 +19,24 @@ class AppliancePlugin(ADKPlugin):
 	def run(self,appliance, settings):
 		success = True 
 		target = Appliance.get_appliance(appliance)
+		vmem = int(target.memory)
+		vcpus = int(target.cpus)
+		appname = target.name
 		#TODO How pass these in
 		format = "raw"
 		package = "none"
+		include = ""
 		
 		ks = imgcreate.read_kickstart(target.kickstart)
-		creator = appcreate.ApplianceImageCreator(ks, target.name, format, 
-						int(target.memory), 
-						int(target.cpus))		
+		creator = appcreate.ApplianceImageCreator(ks, appname, format, vmem, vcpus)		
 		creator.tmpdir = settings["temp_directory"]
-    	creator.checksum = true
-				
+		creator.checksum = True	
 		try:
 			creator.mount("NONE", settings["cache_directory"])
 			creator.install()
 			creator.configure()
 			creator.unmount()
-			creator.package(settings["output_directory"])
+			creator.package(settings["output_directory"], package, include)
 		except imgcreate.CreatorError, e:
 			logging.error("Unable to create appliance : %s" % e)
 			return 1
@@ -44,5 +45,5 @@ class AppliancePlugin(ADKPlugin):
 		
 		
 def get_plugin():
-	return AppliancePlugin()
+	return AppcreatorPlugin()
 	
