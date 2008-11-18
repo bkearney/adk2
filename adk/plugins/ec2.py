@@ -1,7 +1,7 @@
 from adk.adkplugin import ADKPlugin
 
 class EC2Plugin(ADKPlugin):
-	def plugin_name(self):
+	def name(self):
 		return "ec2"
 		
 	def dependencies(self):

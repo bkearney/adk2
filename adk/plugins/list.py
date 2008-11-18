@@ -3,17 +3,22 @@ import adk.appliance as Appliance
 
 class ListPlugin(ADKPlugin):
 	
-	def plugin_name(self):
+	def name(self):
 		return "list"
 		
 	def run(self,appliance, settings):
 		success = True 
+		spacer = "  "
 		if appliance == "appliances":
 			for appliance in Appliance.get_appliances():
-				print appliance
+				print spacer + str(appliance)
 		elif appliance == "settings":
 			for setting, value in settings.iteritems():
-				print "%s => %s" % (setting, value)
+				print spacer + "%s => %s" % (setting, value)
+		elif appliance == "plugins":
+			adk = settings["adk"]
+			for plugin_name, plugin in adk.plugins.iteritems():
+				print spacer + "%s => %s" % (plugin_name, plugin.describe())				
 		else:
 			print ("%s is not a valid item to list" % appliance)
 			

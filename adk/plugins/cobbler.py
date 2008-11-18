@@ -1,7 +1,7 @@
 from adk.adkplugin import ADKPlugin
 
 class CobblerPlugin(ADKPlugin):
-	def plugin_name(self):
+	def name(self):
 		return "cobbler"
 		
 	def dependencies(self):

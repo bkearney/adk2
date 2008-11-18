@@ -1,5 +1,6 @@
 import appliance as Appliance
 import settings as Settings
+import os
 import sys
 
 class ADK:
@@ -7,15 +8,16 @@ class ADK:
 	def __init__(self):
 		self.load_plugins()
 		self.settings = Settings.load_settings()
+		self.settings["adk"] = self
 		
 	def load_plugins(self):
 		# TODO: Make this dynamic
-		plugin_list = ["appliance", "cobbler", "ec2", "init", "list", "gather", "srciso"]
+		plugin_list = ["appcreate", "cobbler", "ec2", "init", "list", "gather", "srciso"]
 		self.plugins={}
 		for plug in plugin_list:
 			plugin_module = __import__("plugins.%s" % (plug), globals(), locals(), [plug])
 			new_plugin = plugin_module.get_plugin()
-			self.plugins[new_plugin.plugin_name()]= new_plugin
+			self.plugins[new_plugin.name()]= new_plugin
 		
 		
 	def process_chain(self, plugin_name, chain=[]):
@@ -41,16 +43,21 @@ class ADK:
 		build_chain = self.process_chain(target)
 		for plugin in build_chain:
 			if plugin.needs_to_run():
-				print("Executing %s" % plugin.plugin_name())
+				print("Executing %s" % plugin.name())
 				plugin.run(appliance, self.settings)
 			else:
-				print("Skipping %s" % plugin.plugin_name())
+				print("Skipping %s" % plugin.name())
 		
 	
 def main():
 	"""
 	Command Line entry
 	"""	
+	
+	if os.geteuid() != 0:
+		print >> sys.stderr, "You must run the adk as root"
+		return 1
+			
 	adk = ADK()
 	cmd = sys.argv[1]
 	appl = None

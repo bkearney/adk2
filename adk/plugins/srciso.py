@@ -10,7 +10,7 @@ import sys
 
 
 class SrcIsoPlugin(ADKPlugin):
-	def plugin_name(self):
+	def name(self):
 		return "srciso"
 		
 	def dependencies(self):

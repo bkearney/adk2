@@ -9,8 +9,11 @@ import sys
 
 
 class GatherPlugin(ADKPlugin):
-	def plugin_name(self):
+	def name(self):
 		return "gather"
+		
+	def describe(self):
+		return "Use pungi to pull down the source rpms for an appliance"
 		
 	def dependencies(self):
 		return ["init"]

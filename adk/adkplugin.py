@@ -1,6 +1,9 @@
 class ADKPlugin:
-	def plugin_name(self):
+	def name(self):
 		return "none"
+		
+	def describe(self):
+		return "I do unknown, but wonderful things"		
 		
 	def dependencies(self):
 		return []

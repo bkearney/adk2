@@ -2,7 +2,7 @@ from adk.adkplugin import ADKPlugin
 import os
 
 class InitPlugin(ADKPlugin):
-	def plugin_name(self):
+	def name(self):
 		return "init"
 		
 	def run(self,appliance, settings):
