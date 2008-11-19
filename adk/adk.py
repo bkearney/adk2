@@ -8,10 +8,12 @@ import sys
 
 class ADK:
 	
-	def __init__(self):
+	def __init__(self, force=False):
 		self.load_plugins()
 		self.settings = Settings.load_settings()
 		self.settings["adk"] = self
+		self.settings["force"] = force
+		self.force = force 
 		
 	def load_plugins(self):
 		# TODO: Make this dynamic
@@ -60,7 +62,7 @@ class ADK:
 			logging.info(msg)
 					
 		for plugin in build_chain:
-			if plugin.needs_to_run():
+			if self.force or plugin.needs_to_run(appliance, self.settings):
 				logging.info("Executing %s" % plugin.name())
 				plugin.run(appliance, self.settings)
 			else:
@@ -73,6 +75,10 @@ def parse_options(args):
     and APPLIANCE can be seen by calling 'adk list appliances'"
 
 	parser = optparse.OptionParser(usage=usage)
+	
+	parser.add_option("", "--force", action="store_true", dest="force",
+				  default=False, help="Force all steps to run")
+					  
 	debug.setup_logging(parser)
 	(options, args) = parser.parse_args()
     	
@@ -87,7 +93,7 @@ def main():
 		print >> sys.stderr, "You must run the adk as root"
 		return 1
 			
-	adk = ADK()
+	# Parse the options
 	args = sys.argv
 	options, args = parse_options(args)	
 	cmd = args[0]	
@@ -96,6 +102,8 @@ def main():
 	if len(args) > 1:
 		logging.debug("Appliance: %s" % cmd)		
 		appl = args[1]
+		
+	adk = ADK(options.force)		
 	adk.build(cmd, appl)
 
 

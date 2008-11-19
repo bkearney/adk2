@@ -16,6 +16,18 @@ class AppcreatorPlugin(ADKPlugin):
 	def dependencies(self):
 		return ["init"]
 		
+	# Return true if the kickstart file is newer
+	# then the virt-image.xml file
+	def needs_to_run(self,appliance, settings):
+		should_run = True
+		target = Appliance.get_appliance(appliance)
+		ksfile = target.kickstart
+		outfile = os.path.join(settings["output_directory"], target.name, "%s.xml" % target.name)
+		if (os.path.exists(outfile)):
+			should_run = (os.stat(ksfile).st_mtime) > (os.stat(outfile).st_mtime)
+		return should_run
+		
+		
 	def run(self,appliance, settings):
 		success = True 
 		target = Appliance.get_appliance(appliance)

@@ -8,7 +8,7 @@ class ADKPlugin:
 	def dependencies(self):
 		return []
 		
-	def needs_to_run(self):
+	def needs_to_run(self,appliance, settings):
 		return True
 		
 	def run(self,appliance, settings):
