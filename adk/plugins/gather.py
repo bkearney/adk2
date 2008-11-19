@@ -22,7 +22,6 @@ class GatherPlugin(ADKPlugin):
 		success = True 
 		target = Appliance.get_appliance(appliance)
 		target_path = os.path.join(settings["output_directory"], target.name, "source")
-		print target_path
 
 		conf = pypungi.config.Config()
 

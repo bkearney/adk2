@@ -3,12 +3,13 @@ import settings
 class Appliance:
 	appliances = None
 	
-	def __init__(self, name="", kickstart="", memory=0, cpus=0, version=0):
+	def __init__(self, name="", kickstart="", memory=0, cpus=0, version=None, release=None):
 		self.name = name
 		self.kickstart = kickstart
 		self.memory = memory
 		self.cpus = cpus
 		self.version = version
+		self.release = release		
 		
 	def __str__(self):
 		return "Appliance '%s' kickstart: '%s'" % (self.name, self.kickstart)

@@ -13,3 +13,6 @@ class ADKPlugin:
 		
 	def run(self,appliance, settings):
 		return True
+		
+	def __str__(self):
+		return self.name()		
