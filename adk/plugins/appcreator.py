@@ -3,7 +3,6 @@ import adk.appliance as Appliance
 import os
 import sys
 import shutil
-import optparse
 import appcreate
 import imgcreate
 import logging
@@ -12,6 +11,9 @@ import logging
 class AppcreatorPlugin(ADKPlugin):
 	def name(self):
 		return "appliance"
+		
+	def describe(self):
+		return "Create a virtual-machine image from a kickstart file."		
 		
 	def dependencies(self):
 		return ["init"]
@@ -22,7 +24,7 @@ class AppcreatorPlugin(ADKPlugin):
 		should_run = True
 		target = Appliance.get_appliance(appliance)
 		ksfile = target.kickstart
-		outfile = os.path.join(settings["output_directory"], target.name, "%s.xml" % target.name)
+		outfile = self.virt_image_path(appliance, settings)
 		if (os.path.exists(outfile)):
 			should_run = (os.stat(ksfile).st_mtime) > (os.stat(outfile).st_mtime)
 		return should_run

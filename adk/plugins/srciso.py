@@ -13,6 +13,9 @@ class SrcIsoPlugin(ADKPlugin):
 	def name(self):
 		return "srciso"
 		
+	def describe(self):
+		return "Build source isos for the appliance"				
+		
 	def dependencies(self):
 		return ["init", "gather"]
 		

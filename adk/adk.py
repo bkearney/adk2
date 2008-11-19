@@ -4,9 +4,10 @@ import debug
 import logging
 import optparse
 import os
+from adkutil import ADKUtil
 import sys
 
-class ADK:
+class ADK(ADKUtil):
 	
 	def __init__(self, force=False):
 		self.load_plugins()
@@ -17,7 +18,7 @@ class ADK:
 		
 	def load_plugins(self):
 		# TODO: Make this dynamic
-		plugin_list = ["appcreator", "cobbler", "ec2", "init", "list", "gather", "srciso"]
+		plugin_list = ["appcreator", "cobbler", "ec2", "init", "list", "gather", "srciso", "ec2convert"]
 		self.plugins={}
 		for plug in plugin_list:
 			logging.debug("Loading plugin: %s " % plug)

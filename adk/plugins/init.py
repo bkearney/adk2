@@ -5,9 +5,13 @@ import logging
 class InitPlugin(ADKPlugin):
 	def name(self):
 		return "init"
+	
+	def describe(self):
+		return "Bootstrap the environment"		
 		
 	def run(self,appliance, settings):
-		for directory in ["log_directory", "appliance_directory"]:
+		for directory in ["log_directory", "output_directory", \
+							"temp_directory", "log_directory"]:
 			if directory in settings:
 				dir_value = settings[directory]
 				if not os.path.isdir(dir_value):

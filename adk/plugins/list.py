@@ -6,6 +6,9 @@ class ListPlugin(ADKPlugin):
 	def name(self):
 		return "list"
 		
+	def describe(self):
+		return "Provide data about the running environment"
+		
 	def run(self,appliance, settings):
 		success = True 
 		spacer = "  "

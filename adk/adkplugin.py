@@ -1,4 +1,5 @@
-class ADKPlugin:
+from adkutil import ADKUtil
+class ADKPlugin(ADKUtil):
 	def name(self):
 		return "none"
 		
