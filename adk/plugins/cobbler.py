@@ -9,6 +9,9 @@ class CobblerPlugin(ADKPlugin):
     def name(self):
         return "cobbler"
         
+    def describe(self):
+        return "Push an appliance to cobbler for provisioning"          
+        
     def dependencies(self):
         return ["init", "appliance"]
         

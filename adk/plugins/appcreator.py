@@ -21,13 +21,10 @@ class AppcreatorPlugin(ADKPlugin):
     # Return true if the kickstart file is newer
     # then the virt-image.xml file
     def needs_to_run(self,appliance, settings):
-        should_run = True
         target = Appliance.get_appliance(appliance)
         ksfile = target.kickstart
         outfile = self.virt_image_path(appliance, settings)
-        if (os.path.exists(outfile)):
-            should_run = (os.stat(ksfile).st_mtime) > (os.stat(outfile).st_mtime)
-        return should_run
+        return self.check_time(ksfile, outfile)
         
         
     def run(self,appliance, settings):

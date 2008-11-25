@@ -19,44 +19,25 @@ class Ec2ConvertPlugin(ADKPlugin):
     def dependencies(self):
         return ["init", "appliance"]
         
+    def needs_to_run(self,appliance, settings):
+        # Check that the input file is newer than at least one of the possible
+        # output files.
+        image_file = self.virt_image_path(appliance, settings)
+        output_name = appliance+"-ec2.disk0"
+        output_path = os.path.join(self.output_path(appliance, settings), output_name)
+        return self.check_time(image_file, output_path)        
+        
     def run(self,appliance, settings):
         success = True 
-        target = Appliance.get_appliance(appliance)
         img = ImageParser.parse_file(self.virt_image_path(appliance, settings))
         count = 0
         for name, disk in img.storage.iteritems():
+            output_name = appliance+"-ec2.disk" + str(count)
+            output_path = os.path.join(self.output_path(appliance, settings), output_name)
+            source_path = os.path.join(self.output_path(appliance, settings), disk.file)            
             count += 1
-            imagefile = os.path.join(self.output_path(appliance, settings), disk.file)
-            imagename = os.path.join(self.output_path(appliance, settings), appliance+"-ec2.disk" + str(count))
-            tmpdir = settings["temp_directory"] + "/ec2-convert-" + (''.join(random.sample('123567890abcdefghijklmnopqrstuvwxyz', 8)))
-            tmpimage = tmpdir + "-tmpimage"
-            newimage = tmpimage + "/ec2-diskimage.img"
-            fsutil = fs.loopbackdisk_image()
-
-            os.mkdir(tmpdir)
-            os.mkdir(tmpimage)
-
-            logging.debug("Copying %s to %s" % (imagefile,tmpimage))
-            shutil.copy(imagefile,newimage)
-
-            #TODO: The ec2-converter code needs to be made into a bit 
-            # more of a library
-            fsutil.setup_fs(imagefile,tmpdir)
-
-            rpmcheck.checkpkgs(tmpdir)
-            config = ec2config.ec2_modify()
-            config.makedev(tmpdir)
-            config.fstab(tmpdir)
-            config.rclocal_config(tmpdir)
-            config.ssh_config(tmpdir)
-
-            config.eth0_config(tmpdir)
-            config.ami_tools(tmpdir)
-            config.kernel_modules(tmpdir)
-            fsutil.unmount(tmpdir)
-            shutil.move(newimage,imagename)  
-            fsutil.cleanup(tmpdir)              
-
+            success = ec2config.convert(source_path, "diskimage", \
+                settings["temp_directory"], "yes", "yes", output_path)            
 
 def get_plugin():
     return Ec2ConvertPlugin()
