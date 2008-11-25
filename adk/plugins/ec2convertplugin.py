@@ -26,7 +26,7 @@ class Ec2ConvertPlugin(ADKPlugin):
         count = 0
         for name, disk in img.storage.iteritems():
             count += 1
-            imagefile = disk.file
+            imagefile = os.path.join(self.output_path(appliance, settings), disk.file)
             imagename = os.path.join(self.output_path(appliance, settings), appliance+"-ec2.disk" + str(count))
             tmpdir = settings["temp_directory"] + "/ec2-convert-" + (''.join(random.sample('123567890abcdefghijklmnopqrstuvwxyz', 8)))
             tmpimage = tmpdir + "-tmpimage"

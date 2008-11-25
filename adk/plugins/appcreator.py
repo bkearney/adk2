@@ -45,6 +45,8 @@ class AppcreatorPlugin(ADKPlugin):
         creator = appcreate.ApplianceImageCreator(ks, appname, format, vmem, vcpus)     
         creator.tmpdir = settings["temp_directory"]
         creator.checksum = True 
+        creator.appliance_version = target.version
+        creator.appliance_release = target.release
         try:
             creator.mount("NONE", settings["cache_directory"])
             creator.install()
