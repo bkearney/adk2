@@ -16,6 +16,9 @@ class Ec2ConvertPlugin(ADKPlugin):
     def name(self):
         return "ec2convert"
         
+    def describe(self):
+        return "Convert an image into an ec2 format"      
+                
     def dependencies(self):
         return ["init", "appliance"]
         

@@ -4,10 +4,10 @@ import debug
 import logging
 import optparse
 import os
-from adkutil import ADKUtil
+from util import *
 import sys
 
-class ADK(ADKUtil):
+class ADK(Util):
     
     def __init__(self, force=False):
         self.load_plugins()
@@ -18,7 +18,7 @@ class ADK(ADKUtil):
         
     def load_plugins(self):
         # TODO: Make this dynamic
-        plugin_list = ["appcreator", "cobbler", "ec2", "init", "list", "gather", "srciso", "ec2convertplugin"]
+        plugin_list = ["appcreator", "cobbler", "ec2", "init", "list", "gather", "srciso", "ec2convertplugin", "clear"]
         self.plugins={}
         for plug in plugin_list:
             logging.debug("Loading plugin: %s " % plug)
@@ -48,27 +48,28 @@ class ADK(ADKUtil):
         
     def build(self, target, appliance):
         build_chain = self.process_chain(target)
-        
-        if logging.getLogger().isEnabledFor(logging.INFO):
-            msg = "Execution Chain is : ["
-            
-            cnt = 0
-            for item in build_chain:    
-                if cnt != 0:
-                    msg += " => "
-                cnt += 1                        
-                msg += ("%s" % str(item))
-            msg += "]"
+        try:
+            if logging.getLogger().isEnabledFor(logging.INFO):
+                msg = "Execution Chain is : ["
                 
-            logging.info(msg)
+                cnt = 0
+                for item in build_chain:    
+                    if cnt != 0:
+                        msg += " => "
+                    cnt += 1                        
+                    msg += ("%s" % str(item))
+                msg += "]"
                     
-        for plugin in build_chain:
-            if self.force or plugin.needs_to_run(appliance, self.settings):
-                logging.info("Executing %s" % plugin.name())
-                plugin.run(appliance, self.settings)
-            else:
-                logging.info("Skipping %s" % plugin.name())
-        
+                logging.info(msg)
+                        
+            for plugin in build_chain:
+                if self.force or plugin.needs_to_run(appliance, self.settings):
+                    logging.info("Executing %s" % plugin.name())
+                    plugin.run(appliance, self.settings)
+                else:
+                    logging.info("Skipping %s" % plugin.name())
+        except UnknownApplianceError:
+            logging.error("No appliance named %s was found" % appliance)
     
 def parse_options(args):
     usage = "Usage: %prog [options] PLUGIN APPLIANCE \n\n\
@@ -97,6 +98,11 @@ def main():
     # Parse the options
     args = sys.argv
     options, args = parse_options(args) 
+    
+    if len(args) == 0:
+        print "You must specify a plugin. Run 'adk list plugins' for an example"
+        return 1
+        
     cmd = args[0]   
     logging.debug("Plugin: %s" % cmd)
     appl = None

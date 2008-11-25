@@ -1,5 +1,4 @@
 from adk.adkplugin import ADKPlugin
-import adk.appliance as Appliance
 import os
 import sys
 import shutil
@@ -21,7 +20,7 @@ class AppcreatorPlugin(ADKPlugin):
     # Return true if the kickstart file is newer
     # then the virt-image.xml file
     def needs_to_run(self,appliance, settings):
-        target = Appliance.get_appliance(appliance)
+        target = self.resolve_appliance(appliance)
         ksfile = target.kickstart
         outfile = self.virt_image_path(appliance, settings)
         return self.check_time(ksfile, outfile)
@@ -29,7 +28,7 @@ class AppcreatorPlugin(ADKPlugin):
         
     def run(self,appliance, settings):
         success = True 
-        target = Appliance.get_appliance(appliance)
+        target = self.resolve_appliance(appliance)
         vmem = int(target.memory)
         vcpus = int(target.cpus)
         appname = target.name
