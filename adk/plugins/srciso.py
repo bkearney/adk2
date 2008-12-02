@@ -35,7 +35,7 @@ class SrcIsoPlugin(ADKPlugin):
         conf.set('default', 'iso_basename', target.name)        
         conf.set('default', 'force', str(True))
         conf.set('default', 'version', str(target.version))     
-        mypungi = pypungi.Pungi(conf)
+        mypungi = pypungi.Pungi(conf, ksparser)
         mypungi.topdir = os.path.join(conf.get('default', 'destdir'),
                                       conf.get('default', 'version'),
                                       "source", 'SRPMS')
