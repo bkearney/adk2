@@ -4,7 +4,7 @@ bits to function. But.. it is good enough to be criticized.
 
 SETUP
 =====
-* yum install pungi git hg
+* yum install pungi git hg PyYAML
 * Install the ami tools from http://developer.amazonwebservices.com/connect/entry.jspa?externalID=368
 * change to the ADK_HOME directory
 * execute setup.sh

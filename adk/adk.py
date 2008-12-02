@@ -28,7 +28,10 @@ class ADK(Util):
         
         
     def process_chain(self, plugin_name, chain=[]):
-        plugin = self.plugins[plugin_name]
+        try:
+            plugin = self.plugins[plugin_name]
+        except KeyError:
+            raise UnknownPluginError("No plugin named %s was found" % plugin_name)
         if plugin not in chain:
             #check to see if any of my dependencies are already in there
             position = 0
@@ -111,7 +114,11 @@ def main():
         appl = args[1]
         
     adk = ADK(options.force)        
-    adk.build(cmd, appl)
+    try:
+        adk.build(cmd, appl)
+    except ADKError, e:
+        print e.msg
+        return 1
 
 
 if __name__ == "__main__":

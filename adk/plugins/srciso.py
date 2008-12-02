@@ -1,9 +1,7 @@
 from adk.adkplugin import ADKPlugin
 import adk.appliance as Appliance
 import os
-import pypungi.config
-import pypungi.gather
-import pypungi.pungi
+import pypungi
 import pykickstart.parser
 import pykickstart.version
 import sys
@@ -37,7 +35,7 @@ class SrcIsoPlugin(ADKPlugin):
         conf.set('default', 'iso_basename', target.name)        
         conf.set('default', 'force', str(True))
         conf.set('default', 'version', str(target.version))     
-        mypungi = pypungi.pungi.Pungi(conf)
+        mypungi = pypungi.Pungi(conf)
         mypungi.topdir = os.path.join(conf.get('default', 'destdir'),
                                       conf.get('default', 'version'),
                                       "source", 'SRPMS')

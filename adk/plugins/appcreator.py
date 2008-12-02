@@ -40,7 +40,7 @@ class AppcreatorPlugin(ADKPlugin):
         ks = imgcreate.read_kickstart(target.kickstart)
         creator = appcreate.ApplianceImageCreator(ks, appname, format, vmem, vcpus)     
         creator.tmpdir = settings["temp_directory"]
-        creator.checksum = True 
+        creator.checksum = target.checksum
         creator.appliance_version = target.version
         creator.appliance_release = target.release
         try:

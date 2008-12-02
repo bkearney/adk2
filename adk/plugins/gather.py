@@ -1,8 +1,7 @@
 from adk.adkplugin import ADKPlugin
 import adk.appliance as Appliance
 import os
-import pypungi.config
-import pypungi.gather
+import pypungi
 import pykickstart.parser
 import pykickstart.version
 import sys
@@ -34,11 +33,12 @@ class GatherPlugin(ADKPlugin):
         conf.set('default', 'version', str(target.version))     
         conf.set('default', 'iso_basename', target.name)
         conf.set('default', 'cachedir', settings["cache_directory"])
-        mygather = pypungi.gather.Gather(conf, ksparser)
-        mygather.getPackageObjects()
-        mygather.getSRPMList()
-        mygather.downloadSRPMs()
-            
+        mypungi = pypungi.Pungi(cont, ksparser)
+        mypungi._inityum()	
+        mypungi.getPackageObjects()
+        mypungi.getSRPMList()
+        mypungi.downloadSRPMs()
+			
         
 def get_plugin():
     return GatherPlugin()

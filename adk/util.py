@@ -1,10 +1,18 @@
 import os
 import appliance as Appliance
 
-class UnknownApplianceError(Exception):
-    """An exception base class for all imgcreate errors."""
+class ADKError(Exception):
     def __init__(self, msg):
+        self.msg = msg
         Exception.__init__(self, msg)
+
+class UnknownApplianceError(ADKError):
+    def __init__(self, msg):
+        ADKError.__init__(self, msg)
+        
+class UnknownPluginError(ADKError):
+    def __init__(self, msg):
+        ADKError.__init__(self, msg)        
 
 
 class Util:
@@ -24,5 +32,6 @@ class Util:
 
     def resolve_appliance(self, appliance_name, raise_error = True):
         target = Appliance.get_appliance(appliance_name)
-        if raise_error:
+        if (target is None) and raise_error:
             raise UnknownApplianceError("No appliance named %s was found" % appliance_name)
+        return target 
