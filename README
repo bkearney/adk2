@@ -5,7 +5,9 @@ bits to function. But.. it is good enough to be criticized.
 SETUP
 =====
 * yum install pungi git hg PyYAML
-* Install the ami tools from http://developer.amazonwebservices.com/connect/entry.jspa?externalID=368
+* If you plan to use the EC2 bits:
+** Install the ami tools from http://developer.amazonwebservices.com/connect/entry.jspa?externalID=368
+** Install the ec2 api tools: http://developer.amazonwebservices.com/connect/entry.jspa?externalID=351&categoryID=88
 * change to the ADK_HOME directory
 * execute setup.sh
 * copy adk.yml.example to adk.yml
