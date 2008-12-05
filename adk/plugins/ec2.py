@@ -8,6 +8,9 @@ class EC2Plugin(ADKPlugin):
     def name(self):
         return "ec2"
         
+    def describe(self):
+        return "Bundle and upload an image to EC2"              
+        
     def dependencies(self):
         return ["init","ec2convert"]
 
