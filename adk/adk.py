@@ -73,6 +73,10 @@ class ADK(Util):
                     logging.info("Skipping %s" % plugin.name())
         except UnknownApplianceError:
             logging.error("No appliance named %s was found" % appliance)
+            
+    def build_all(self, cmd):
+        for appl in Appliance.get_appliances():
+            self.build(cmd, appl.name)
     
 def parse_options(args):
     usage = "Usage: %prog [options] PLUGIN APPLIANCE \n\n\
@@ -113,9 +117,12 @@ def main():
         logging.debug("Appliance: %s" % cmd)        
         appl = args[1]
         
-    adk = ADK(options.force)        
+    adk = ADK(options.force)   
     try:
-        adk.build(cmd, appl)
+        if appl == "ALL":
+            adk.build_all(cmd)
+        else:
+            adk.build(cmd, appl)
     except ADKError, e:
         print e.msg
         return 1
