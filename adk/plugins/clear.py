@@ -1,4 +1,5 @@
 from adk.adkplugin import ADKPlugin
+import os
 import shutil
 import logging
 
@@ -13,13 +14,18 @@ class ClearPlugin(ADKPlugin):
         shutil.rmtree(directory)
 
     def run(self,appliance, settings):
-        
-        if appliance not in ["cache"]:
-            print ("%s is not a valid item to clear" % appliance)
+        clear_targets = ["cache", "output", "all" ]
+        if appliance not in clear_targets:
+            print ("%s is not a valid item to clear. Select one of: [%s]." % (appliance, ", ".join(clear_targets)))
             return False
                             
-        if appliance == "cache":
-            self.remove_directory(settings["cache_directory"])
+        if appliance == "cache" or appliance== "all":
+            if os.path.exists(settings["cache_directory"]):
+                self.remove_directory(settings["cache_directory"])
+                
+        if appliance == "output" or appliance== "all":
+            if os.path.exists(settings["output_directory"]):
+                self.remove_directory(settings["output_directory"])                
         
         
 def get_plugin():
