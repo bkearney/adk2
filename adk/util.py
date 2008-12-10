@@ -1,4 +1,5 @@
 import os
+import logging
 import appliance as Appliance
 
 class ADKError(Exception):
@@ -35,3 +36,12 @@ class Util:
         if (target is None) and raise_error:
             raise UnknownApplianceError("No appliance named %s was found" % appliance_name)
         return target 
+        
+    def create_directory(self, directory):
+        if not os.path.isdir(directory):
+            logging.info("Creating directory '%s' " % directory)
+            os.makedirs(directory)    
+            
+    def exec_cmd(self, cmd):
+        logging.debug("Excuting '%s'" % cmd)
+        os.system(cmd)

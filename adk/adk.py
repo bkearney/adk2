@@ -18,8 +18,8 @@ class ADK(Util):
         
     def load_plugins(self):
         # TODO: Make this dynamic
-        plugin_list = ["appcreator", "cobbler", "ec2", "init", "list", \
-        "gather", "srciso", "ec2convertplugin", "clear", "vmx"]
+        plugin_list = ["appcreator", "cobbler", "clear", "init", "list", \
+        "gather", "srciso", "ec2convertplugin",  "ec2register", "ec2bundle", "ec2upload", "vmx"]
         self.plugins={}
         for plug in plugin_list:
             logging.debug("Loading plugin: %s " % plug)
@@ -37,16 +37,14 @@ class ADK(Util):
             #check to see if any of my dependencies are already in there
             position = 0
             for dep in plugin.dependencies():
-                dep = self.plugins[dep]
-                if dep in chain:
-                    dep_position = chain.index(dep) + 1
+                dep_plugin = self.plugins[dep]
+                self.process_chain(dep, chain)                    
+                if dep_plugin in chain:
+                    dep_position = chain.index(dep_plugin) + 1
                     if dep_position > position:
                         position = dep_position 
+            logging.debug("inserting %s at position %s" % (plugin.name(), str(position)))
             chain.insert(position, plugin)  
-            
-            #Now add the dependencies
-            for dep in plugin.dependencies():
-                self.process_chain(dep, chain)          
                 
         return chain
         
@@ -68,7 +66,7 @@ class ADK(Util):
                         
             for plugin in build_chain:
                 if self.force or plugin.needs_to_run(appliance, self.settings):
-                    logging.info("Executing %s" % plugin.name())
+                    logging.info("Executing %s for %s" % (plugin.name(), appliance))
                     plugin.run(appliance, self.settings)
                 else:
                     logging.info("Skipping %s" % plugin.name())
@@ -78,6 +76,7 @@ class ADK(Util):
     def build_all(self, cmd):
         for appl in Appliance.get_appliances():
             self.build(cmd, appl.name)
+            self.load_plugins()
     
 def parse_options(args):
     usage = "Usage: %prog [options] PLUGIN APPLIANCE \n\n\
