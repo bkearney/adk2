@@ -15,7 +15,7 @@ SETUP
 * edit the yml file for more settings
 * su to root
 * change to the ADK_HOME directory
-* . ./adk.rc
+* . adk.rc
 
 
 RUNNING

@@ -1,16 +1,22 @@
 import os
 import yaml
+from util import *
 
 def load_settings():
-    adk_home = os.environ["ADK_HOME"]
-    config_file = os.path.join(adk_home, "adk.yml")
-    settings = yaml.load(open(config_file))
-    settings["adk_home"]= adk_home
-    settings["config_file"] = config_file
+    try:
+        config_file = os.environ["ADK_SETTINGS"]
+        settings = yaml.load(open(config_file))
+        settings["config_file"] = config_file
+    except KeyError:
+        raise ADKError("ADK_SETTINGS environment variable is not set")
+        
     return settings
     
     
 def load_appliances():
-    adk_home = os.environ["ADK_HOME"]
-    config_file = os.path.join(adk_home, "appliances.yml")
+    try:
+        config_file = os.environ["ADK_APPLIANCES"]
+    except KeyError:
+        raise ADKError("ADK_APPLIANCES environment variable is not set")
+            
     return yaml.load(open(config_file))

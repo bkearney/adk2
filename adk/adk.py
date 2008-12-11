@@ -117,8 +117,8 @@ def main():
         logging.debug("Appliance: %s" % cmd)        
         appl = args[1]
         
-    adk = ADK(options.force)   
     try:
+        adk = ADK(options.force)           
         if appl == "ALL":
             adk.build_all(cmd)
         else:

@@ -3,3 +3,8 @@ test:
     memory: "512"
     cpus: "1"  
     version: "1"
+    checksum: True
+    s3bucket: mahBucket
+    ec2kernel: testkernel
+    ec2ramdisk: testrd
+
