@@ -1,7 +1,6 @@
 from adk.adkplugin import ADKPlugin
 import adk.appliance as Appliance
 import os
-import pypungi
 import pypungi.config
 import pykickstart.parser
 import pykickstart.version
@@ -18,6 +17,20 @@ class GatherPlugin(ADKPlugin):
     def dependencies(self):
         return ["init"]
         
+		
+    def get_pungi(self, conf, ksparser):
+        # Try the new API, fall back to the old
+        mypungi = None
+        try:
+            import pypungi.gather
+            mypungi = pypungi.gather.Gather(conf, ksparser)            
+        except:
+            from pypungi import Pungi
+            mypungi = Pungi(conf, ksparser)
+            mypungi._inityum()	    
+         
+        return mypungi
+		
     def run(self,appliance, settings):
         success = True 
         target = Appliance.get_appliance(appliance)
@@ -34,12 +47,11 @@ class GatherPlugin(ADKPlugin):
         conf.set('default', 'version', str(target.version))     
         conf.set('default', 'iso_basename', target.name)
         conf.set('default', 'cachedir', settings["cache_directory"])
-        mypungi = pypungi.Pungi(conf, ksparser)
-        mypungi._inityum()	
+
+        mypungi = self.get_pungi(conf, ksparser)
         mypungi.getPackageObjects()
         mypungi.getSRPMList()
         mypungi.downloadSRPMs()
-			
         
 def get_plugin():
     return GatherPlugin()
