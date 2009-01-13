@@ -11,6 +11,7 @@ class ClearPlugin(ADKPlugin):
         return "Clean up the environment"      
         
     def remove_directory(self, directory):
+        logging.debug("Removing directory %s" % directory)
         shutil.rmtree(directory)
 
     def run(self,appliance, settings):
@@ -20,8 +21,9 @@ class ClearPlugin(ADKPlugin):
             return False
                             
         if appliance == "cache" or appliance== "all":
-            if os.path.exists(settings["cache_directory"]):
-                self.remove_directory(settings["cache_directory"])
+            path = os.path.join(settings["cache_directory"], settings["arg0"])
+            if os.path.exists(path):
+                self.remove_directory(path)
                 
         if appliance == "output" or appliance== "all":
             if os.path.exists(settings["output_directory"]):

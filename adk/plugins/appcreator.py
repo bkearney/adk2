@@ -9,7 +9,7 @@ import logging
 
 class AppcreatorPlugin(ADKPlugin):
     def name(self):
-        return "appliance"
+        return "build"
         
     def describe(self):
         return "Create a virtual-machine image from a kickstart file."      

@@ -13,7 +13,7 @@ class CobblerPlugin(ADKPlugin):
         return "Push an appliance to cobbler for provisioning"          
         
     def dependencies(self):
-        return ["init", "appliance"]
+        return ["init", "build"]
         
     def run(self,appliance, settings):
         # Get the disk files     

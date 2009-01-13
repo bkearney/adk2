@@ -47,9 +47,14 @@ class ADK(Util):
             chain.insert(position, plugin)  
                 
         return chain
-        
-    def build(self, target, appliance):
+
+    def store_args(self, args):
+        for x in range(len(args)):
+            self.settings["arg%s" % x] = args[x]
+            
+    def build(self, target, appliance, args):
         build_chain = self.process_chain(target)
+        self.store_args(args)
         try:
             if logging.getLogger().isEnabledFor(logging.INFO):
                 msg = "Execution Chain is : ["
@@ -79,7 +84,7 @@ class ADK(Util):
             self.load_plugins()
     
 def parse_options(args):
-    usage = "Usage: %prog [options] PLUGIN APPLIANCE \n\n\
+    usage = "Usage: %prog [options] PLUGIN APPLIANCE [OTHER OPTIONS]\n\n\
     Where PLUGIN can be seen by calling 'adk list plugins' \n\
     and APPLIANCE can be seen by calling 'adk list appliances'"
 
@@ -110,19 +115,19 @@ def main():
         print "You must specify a plugin. Run 'adk list plugins' for an example"
         return 1
         
-    cmd = args[0]   
+    cmd = args.pop(0)
     logging.debug("Plugin: %s" % cmd)
     appl = None
-    if len(args) > 1:
+    if len(args) > 0:
         logging.debug("Appliance: %s" % cmd)        
-        appl = args[1]
+        appl = args.pop(0)
         
     try:
         adk = ADK(options.force)           
         if appl == "ALL":
             adk.build_all(cmd)
         else:
-            adk.build(cmd, appl)
+            adk.build(cmd, appl, args)
     except ADKError, e:
         print e.msg
         return 1

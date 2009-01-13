@@ -21,7 +21,7 @@ class Ec2ConvertPlugin(EC2Plugin):
         return "Convert an image into an ec2 format"      
                 
     def dependencies(self):
-        return ["init", "appliance"]
+        return ["init", "build"]
         
     def needs_to_run(self,appliance, settings):
         # Check that the input file is newer than at least one of the possible

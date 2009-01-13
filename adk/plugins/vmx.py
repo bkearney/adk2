@@ -15,7 +15,7 @@ class VMXPlugin(ADKPlugin):
         return "Convert an image into a vmx format"      
                 
     def dependencies(self):
-        return ["appliance"]
+        return ["build"]
         
     def output_dir(self, appliance, settings):
         return os.path.join(self.output_path(appliance, settings), "vmware")    
