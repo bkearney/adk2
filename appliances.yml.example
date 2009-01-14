@@ -1,4 +1,5 @@
-test:
+---
+    name: test:
     kickstart: "test.ks"
     memory: "512"
     cpus: "1"  
