@@ -28,16 +28,16 @@ class SrcIsoPlugin(ADKPlugin):
         ksparser = pykickstart.parser.KickstartParser(pykickstart.version.makeVersion())
         ksparser.readKickstart(target.kickstart)
 
-        conf.set('default', 'name', target.name)
-        conf.set('default', 'destdir', target_path)     
-        conf.set('default', 'arch', 'source')       
-        conf.set('default', 'cachedir', settings["cache_directory"])
-        conf.set('default', 'iso_basename', target.name)        
-        conf.set('default', 'force', str(True))
-        conf.set('default', 'version', str(target.version))     
+        conf.set('pungi', 'name', target.name)
+        conf.set('pungi', 'destdir', target_path)     
+        conf.set('pungi', 'arch', 'source')       
+        conf.set('pungi', 'cachedir', settings["cache_directory"])
+        conf.set('pungi', 'iso_basename', target.name)        
+        conf.set('pungi', 'force', str(True))
+        conf.set('pungi', 'version', str(target.version))     
         mypungi = pypungi.Pungi(conf, ksparser)
-        mypungi.topdir = os.path.join(conf.get('default', 'destdir'),
-                                      conf.get('default', 'version'),
+        mypungi.topdir = os.path.join(conf.get('pungi', 'destdir'),
+                                      conf.get('pungi', 'version'),
                                       "source", 'SRPMS')
         mypungi.doCreaterepo(comps=False)
         mypungi.doCreateIsos(split=False)

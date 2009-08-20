@@ -9,7 +9,6 @@ SETUP
 ** Install the ami tools from http://developer.amazonwebservices.com/connect/entry.jspa?externalID=368
 ** Install the ec2 api tools: http://developer.amazonwebservices.com/connect/entry.jspa?externalID=351&categoryID=88
 * change to the ADK_HOME directory
-* execute setup.sh
 * copy adk.yml.example to adk.yml
 * copy appliance.yml.example to appliance.yml
 * edit the yml file for more settings

@@ -19,7 +19,8 @@ class ADK(Util):
     def load_plugins(self):
         # TODO: Make this dynamic
         plugin_list = ["appcreator", "cobbler", "clear", "init", "list", \
-        "gather", "srciso", "ec2convertplugin",  "ec2register", "ec2bundle", "ec2upload", "vmx"]
+        "gather", "srciso", "ec2convertplugin",  "ec2register", "ec2bundle", \
+        "kickstart", "ec2upload", "vmx"]
         self.plugins={}
         for plug in plugin_list:
             logging.debug("Loading plugin: %s " % plug)

@@ -7,6 +7,7 @@ class Appliance(yaml.YAMLObject):
 
     def __init__(self, name="", kickstart="", memory=0, cpus=0, version=None, \
                 release=None, checksum=True, s3bucket=None, ec2ramdisk=None, ec2kernel=None, kickstart_meta = None):
+        print "HELLO2"
         self.name = name
         self.kickstart = kickstart
         self.memory = memory
@@ -20,31 +21,41 @@ class Appliance(yaml.YAMLObject):
         self.kickstart_meta = kickstart_meta
 
     def __str__(self):
-        return "Appliance '%s' kickstart: '%s'" % (self.name, self.kickstart)        
+        if ("kickstart" in self.__dict__.keys()):
+            ks = self.kickstart
+        else:
+            ks = "auto generated"
+        return "Appliance '%s' kickstart: '%s'" % (self.name, ks)        
 
 class KickstartMeta(yaml.YAMLObject):
     yaml_tag = u'!KickstartMeta'
-    def __init__(self, rootpw, packages=[], repos=[], partitions=[]):
+    def __init__(self, rootpw, packages=[], repos=[], partitions=[], excludes=[]):
         self.rootpw = rootpw
         self.packages = packages
         self.repos = repos
         self.partions = packages
+        self.excludes = excludes
 
 class Repo(yaml.YAMLObject):
     yaml_tag = u'!Repo'
-    
-    def __init__(self, name, mirrorlist=None, baseurl=None):
-        self.name = name
-        self.mirrorlist = mirrorlist
-        self.baseurl = baseurl
-
+   
+    def __init__(self):
+        self.name = ""
+        self.mirrorlist = None
+        self.baseurl = None
+        
 class Partition(yaml.YAMLObject):
     yaml_tag = u'!Partition'
+
     def __init__(self, root, type="ext3", size="1000", disk="sda" ):
+        print "HELLO"
         self.root = root
         self.type = type
         self.size = size
         self.disk = disk
+
+    def __str__(self):
+        return "Partition '%r' type: '%r' size: '%r' disk: '%r'" % (self.root, self.kickstart, self.size, self.disk)         
 
 # This custom loader allows us to parse the appliance syntax
 # and not interfere with any other yaml parsing.

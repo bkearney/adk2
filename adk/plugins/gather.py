@@ -15,7 +15,7 @@ class GatherPlugin(ADKPlugin):
         return "Use pungi to pull down the source rpms for an appliance"
         
     def dependencies(self):
-        return ["init"]
+        return ["init", "kickstart"]
         
 		
     def get_pungi(self, conf, ksparser):
@@ -42,14 +42,18 @@ class GatherPlugin(ADKPlugin):
         ksparser = pykickstart.parser.KickstartParser(pykickstart.version.makeVersion())
         ksparser.readKickstart(target.kickstart)
 
-        conf.set('default', 'name', target.name)
-        conf.set('default', 'destdir', target_path)     
-        conf.set('default', 'version', str(target.version))     
-        conf.set('default', 'iso_basename', target.name)
-        conf.set('default', 'cachedir', settings["cache_directory"])
+        conf.set('pungi', 'name', target.name)
+        conf.set('pungi', 'destdir', target_path)     
+        conf.set('pungi', 'version', str(target.version))     
+        conf.set('pungi', 'iso_basename', target.name)
+        conf.set('pungi', 'force', str(True))        
+        conf.set('pungi', 'cachedir', settings["cache_directory"])
+        conf.set('pungi', 'debuginfo', "True")
+        
 
         mypungi = self.get_pungi(conf, ksparser)
         mypungi.getPackageObjects()
+        mypungi.createSourceHashes()
         mypungi.getSRPMList()
         mypungi.downloadSRPMs()
         

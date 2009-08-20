@@ -1,0 +1,36 @@
+lang en_US.UTF-8
+keyboard us
+timezone US/Eastern
+auth --useshadow --enablemd5
+selinux --permissive
+firewall --disabled
+bootloader --timeout=1 --append="acpi=force"
+network --bootproto=dhcp --device=eth0 --onboot=on
+rootpw $ks.rootpw
+
+# 
+# Partitoin Information. Change this as necessary
+#
+#for $part in $ks.partitions
+    part $part.root --size $part.size --fstype $part.type --ondisk $part.disk
+#end for 
+
+#
+# Include the repositories
+#
+#for $repo in $ks.repos
+repo --name=$repo.name --mirrorlist=$repo.mirrorlist
+#end for
+
+#
+# Add all the packages after the base packages
+#
+%packages --excludedocs --nobase --instLangs=en:fr
+#for $package in $ks.packages
+    $package
+#end for
+#for $package in $ks.excludes
+    -$package
+#end for
+%end
+

@@ -1,5 +1,5 @@
 ---
-    name: test:
+    name: test
     kickstart: "test.ks"
     memory: "512"
     cpus: "1"  
@@ -8,4 +8,63 @@
     s3bucket: mahBucket
     ec2kernel: testkernel
     ec2ramdisk: testrd
+---
+    name: jeos
+    memory: "512"
+    cpus: "1"  
+    version: "1"   
+    release: "0"
+    checksum: False
+    
+    kickstart_meta:
+        rootpw: jeos
+        packages:
+            - bash
+            - kernel
+            - grub
+            - e2fsprogs
+            - passwd
+            - policycoreutils
+            - chkconfig
+            - rootfiles
+            - yum
+            - vim-minimal
+            - acpid
+            - lokkit
+            - dhclient
+            - iputils
+            - generic-logos
+        excludes:
+            - kudzu
+            - prelink
+            - setserial
+            - ed
+            - authconfig
+            - rhpl
+            - wireless-tools
+            - kbd
+            - usermode
+            - mkinitrd
+            - kpartx
+            - dmraid
+            - mdadm
+            - lvm2
+            - tar
+            - policycoreutils
+            - checkpolicy
+            - selinux-policy*
+            - libselinux-python
+            - libselinux
+            - fedora-logos
+            - fedora-release-notes
+        repos:
+            - name: "f11"
+              mirrorlist: "http://mirrors.fedoraproject.org/mirrorlist?repo=fedora-11&arch=$basearch"
+            - name: "f11-updates"
+              mirrorlist: "http://mirrors.fedoraproject.org/mirrorlist?repo=updates-released-f11&arch=$basearch"
+        partitions:
+            - root: "/"
+              size: 1500
+              disk: sda
+              type: ext3        
 

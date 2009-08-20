@@ -3,6 +3,7 @@ output_directory: "/appliances"
 log_directory: "/appliances/logs"
 cache_directory: "/appliances/cache"
 temp_directory: "/tmp"
+kickstart_template: "./kickstart.tmpl"
  
 # Amazon Information
 aws_private_key: "pk-XXXX.pem"

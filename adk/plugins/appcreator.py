@@ -15,7 +15,7 @@ class AppcreatorPlugin(ADKPlugin):
         return "Create a virtual-machine image from a kickstart file."      
         
     def dependencies(self):
-        return ["init"]
+        return ["kickstart"]
         
     # Return true if the kickstart file is newer
     # then the virt-image.xml file
