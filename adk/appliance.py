@@ -21,11 +21,14 @@ class Appliance(yaml.YAMLObject):
         self.kickstart_meta = kickstart_meta
 
     def __str__(self):
-        if ("kickstart" in self.__dict__.keys()):
+        if (not self.generated_kickstart()):
             ks = self.kickstart
         else:
             ks = "auto generated"
-        return "Appliance '%s' kickstart: '%s'" % (self.name, ks)        
+        return "Appliance '%s' kickstart: '%s'" % (self.name, ks)
+
+    def generated_kickstart(self):
+        return "kickstart_meta" in self.__dict__.keys()
 
 class KickstartMeta(yaml.YAMLObject):
     yaml_tag = u'!KickstartMeta'
@@ -75,7 +78,7 @@ def load_appliances():
         yaml.add_path_resolver(u'!Repo', ["kickstart_meta", "repos", (yaml.SequenceNode, False)],None, ApplianceLoader)
         yaml.add_path_resolver(u'!Partition', ["kickstart_meta", "partitions", (yaml.SequenceNode, False)],None, ApplianceLoader)
         # Load the file
-        for appliance in yaml.load_all(open(config_file), ApplianceLoader):
+        for appliance in yaml.load_all(open(config_file, "r"), ApplianceLoader):
             Appliance.appliances[appliance.name] = appliance     
     except KeyError:
         raise ADKError("ADK_APPLIANCES environment variable is not set")

@@ -18,7 +18,7 @@ class KickstartGenPlugin(ADKPlugin):
         
     def run(self,appliance, settings):
         target = self.resolve_appliance(appliance)
-        if ("kickstart" not in target.__dict__.keys()):
+        if (target.generated_kickstart()):
             t = Template(file=settings["kickstart_template"])
             t.ks = target.kickstart_meta
             ksname = "%s.ks" % appliance

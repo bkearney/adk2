@@ -37,7 +37,8 @@ class Ec2ConvertPlugin(EC2Plugin):
         directory = self.output_dir(appliance, settings)
         self.create_directory(directory)
         for name, disk in img.storage.iteritems():
-            source_path = os.path.join(self.output_path(appliance, settings), disk.file)            
+            source_path = os.path.join(self.output_path(appliance, settings), disk.file)
+            print source_path         
             success = ec2config.convert(source_path, "diskimage", \
                 settings["temp_directory"], "yes", "yes", self.converted_file(count, appliance, settings))            
             count += 1                

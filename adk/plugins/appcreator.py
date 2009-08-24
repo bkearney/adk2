@@ -23,7 +23,10 @@ class AppcreatorPlugin(ADKPlugin):
         target = self.resolve_appliance(appliance)
         ksfile = target.kickstart
         outfile = self.virt_image_path(appliance, settings)
-        return self.check_time(ksfile, outfile)
+        if (target.generated_kickstart()):
+            return self.check_time(settings["appliance_file"], outfile)
+        else:
+            return self.check_time(ksfile, outfile)
         
         
     def run(self,appliance, settings):

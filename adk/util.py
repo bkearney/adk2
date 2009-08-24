@@ -26,7 +26,7 @@ class Util:
     def check_time(self, input, output):
         """Returns True if the input file is newer then the output file
            or if the output file does not exist"""
-        should_run = True
+        should_run = True       
         if (os.path.exists(output)):
             should_run = (os.stat(input).st_mtime) > (os.stat(output).st_mtime)
         return should_run

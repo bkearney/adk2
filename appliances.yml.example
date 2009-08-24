@@ -15,7 +15,6 @@
     version: "1"   
     release: "0"
     checksum: False
-    
     kickstart_meta:
         rootpw: jeos
         packages:
@@ -34,6 +33,7 @@
             - dhclient
             - iputils
             - generic-logos
+            - openssh-server
         excludes:
             - kudzu
             - prelink
