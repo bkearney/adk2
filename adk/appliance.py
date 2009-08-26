@@ -5,20 +5,21 @@ class Appliance(yaml.YAMLObject):
     yaml_tag = u'!Appliance'    
     appliances = None
 
-    def __init__(self, name="", kickstart="", memory=0, cpus=0, version=None, \
+    def __new__(cls, name="", kickstart="", memory=0, cpus=0, version=None, \
                 release=None, checksum=True, s3bucket=None, ec2ramdisk=None, ec2kernel=None, kickstart_meta = None):
-        print "HELLO2"
-        self.name = name
-        self.kickstart = kickstart
-        self.memory = memory
-        self.cpus = cpus
-        self.version = version
-        self.release = release
-        self.checksum = checksum
-        self.s3bucket = s3bucket
-        self.ec2ramdisk = ec2ramdisk
-        self.ec2kernel = ec2kernel
-        self.kickstart_meta = kickstart_meta
+        obj = yaml.YAMLObject.__new__(cls)
+        obj.name = name
+        obj.kickstart = kickstart
+        obj.memory = memory
+        obj.cpus = cpus
+        obj.version = version
+        obj.release = release
+        obj.checksum = checksum
+        obj.s3bucket = s3bucket
+        obj.ec2ramdisk = ec2ramdisk
+        obj.ec2kernel = ec2kernel
+        obj.kickstart_meta = kickstart_meta
+        return obj
 
     def __str__(self):
         if (not self.generated_kickstart()):
@@ -28,34 +29,39 @@ class Appliance(yaml.YAMLObject):
         return "Appliance '%s' kickstart: '%s'" % (self.name, ks)
 
     def generated_kickstart(self):
-        return "kickstart_meta" in self.__dict__.keys()
+        return "kickstart_meta" is None
 
 class KickstartMeta(yaml.YAMLObject):
     yaml_tag = u'!KickstartMeta'
-    def __init__(self, rootpw, packages=[], repos=[], partitions=[], excludes=[]):
-        self.rootpw = rootpw
-        self.packages = packages
-        self.repos = repos
-        self.partions = packages
-        self.excludes = excludes
+    def __new__(cls, rootpw="", packages=[], repos=[], partitions=[], excludes=[]):
+        obj = yaml.YAMLObject.__new__(cls)        
+        obj.rootpw = rootpw
+        obj.packages = packages
+        obj.repos = repos
+        obj.partions = packages
+        obj.excludes = excludes
+        return obj
 
 class Repo(yaml.YAMLObject):
     yaml_tag = u'!Repo'
    
-    def __init__(self):
-        self.name = ""
-        self.mirrorlist = None
-        self.baseurl = None
+    def __new__(cls, name="", mirrorlist=None, baseurl=None):
+        obj = yaml.YAMLObject.__new__(cls)            
+        obj.name = name
+        obj.mirrorlist = mirrorlist
+        obj.baseurl = baseurl
+        return obj
         
 class Partition(yaml.YAMLObject):
     yaml_tag = u'!Partition'
 
-    def __init__(self, root, type="ext3", size="1000", disk="sda" ):
-        print "HELLO"
-        self.root = root
-        self.type = type
-        self.size = size
-        self.disk = disk
+    def __new__(cls, root="", type="ext3", size="1000", disk="sda" ):      
+        obj = yaml.YAMLObject.__new__(cls)   
+        obj.root = root
+        obj.type = type
+        obj.size = size
+        obj.disk = disk
+        return obj
 
     def __str__(self):
         return "Partition '%r' type: '%r' size: '%r' disk: '%r'" % (self.root, self.kickstart, self.size, self.disk)         
