@@ -19,26 +19,27 @@ class LiveCDPlugin(ADKPlugin):
     # Return true if the kickstart file is newer
     # then the virt-image.xml file
     def needs_to_run(self,appliance, settings):
-        #target = self.resolve_appliance(appliance)
-        #ksfile = target.kickstart
-        #outfile = self.virt_image_path(appliance, settings)
-        #if (target.generated_kickstart()):
-        #    return self.check_time(settings["appliance_file"], outfile)
-        #else:
-        #    return self.check_time(ksfile, outfile)
-        return True
-        
+        target = self.resolve_appliance(appliance)
+        ksfile = target.kickstart
+        outfile = os.path.join(self.output_dir(appliance, settings), "%s-live" % target.name)
+        if (target.generated_kickstart()):
+            return self.check_time(settings["appliance_file"], outfile)
+        else:
+            return self.check_time(ksfile, outfile)
+
+    def output_dir(self, appliance, settings):
+        return os.path.join(self.output_path(appliance, settings), "livecd")           
         
     def run(self,appliance, settings):
         
         success = True 
         target = self.resolve_appliance(appliance)
-
-        name = imgcreate.build_name(target.kickstart, "livecd-")
-        fs_label = imgcreate.build_name(target.kickstart, 
-                                        "livecd-",
+        self.create_directory(self.output_dir(appliance, settings))
+        name = "%s-live" % target.name
+        fs_label = imgcreate.build_name(target.name, 
+                                        prefix=None,
                                         maxlen = imgcreate.FSLABEL_MAXLEN,
-                                        suffix = "%s-%s" %(os.uname()[4], time.strftime("%Y%m%d%H%M")))
+                                        suffix="-livecd")
 
         logging.info("Using label '%s' and name '%s'" % (fs_label, name))
 
@@ -51,11 +52,12 @@ class LiveCDPlugin(ADKPlugin):
         creator.skip_minimize = False
         
         try:
+            
             creator.mount(None, os.path.abspath(settings["cache_directory"]))
             creator.install()
             creator.configure()
             creator.unmount()
-            creator.package()
+            creator.package(destdir=self.output_dir(appliance, settings))
         except imgcreate.CreatorError, e:
             logging.error(u"Error creating Live CD : %s" % e)
             return False
