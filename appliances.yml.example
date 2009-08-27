@@ -10,7 +10,7 @@
     ec2ramdisk: testrd
 ---
     name: live
-    kickstart: http://git.fedorahosted.org/git/spin-kickstarts.git?p=spin-kickstarts.git;a=blob_plain;f=fedora-live-base.ks
+    kickstart: "http://git.fedorahosted.org/git/spin-kickstarts.git?p=spin-kickstarts.git;a=blob_plain;f=fedora-live-base.ks;hb=986c7b7555d42b12474d15fa2c3b5a3f3d88f6a9"
 ---
     name: jeos
     memory: "512"
