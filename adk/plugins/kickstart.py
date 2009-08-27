@@ -1,5 +1,6 @@
 import os
 import tempfile
+import logging
 import adk.appliance as Appliance
 from adk.adkplugin import ADKPlugin
 from Cheetah.Template import Template
@@ -19,14 +20,15 @@ class KickstartGenPlugin(ADKPlugin):
     def run(self,appliance, settings):
         target = self.resolve_appliance(appliance)
         if (target.generated_kickstart()):
-            t = Template(file=settings["kickstart_template"])
-            t.ks = target.kickstart_meta
-            ksname = "%s.ks" % appliance
-            kspath = os.path.join(settings["temp_directory"],ksname)
-            f = open(kspath, 'w')
-            f.write(str(t))
-            f.close()
-            target.kickstart=kspath 
+			t = Template(file=settings["kickstart_template"])
+			t.ks = target.kickstart_meta
+			ksname = "%s.ks" % appliance
+			kspath = os.path.join(settings["temp_directory"],ksname)
+			logging.info("Creating kickstart file at %s " % kspath)
+			f = open(kspath, 'w')
+			f.write(str(t))
+			f.close()
+			target.kickstart=kspath 
         
 def get_plugin():
     return KickstartGenPlugin()

@@ -29,7 +29,7 @@ class Appliance(yaml.YAMLObject):
         return "Appliance '%s' kickstart: '%s'" % (self.name, ks)
 
     def generated_kickstart(self):
-        return "kickstart_meta" is None
+        return self.kickstart_meta is not None
 
 class KickstartMeta(yaml.YAMLObject):
     yaml_tag = u'!KickstartMeta'
