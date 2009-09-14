@@ -1,18 +1,51 @@
-#general setup information
+##############################################
+General Setup
+##############################################
+
+# Change this path to control the root of where all artifacts 
+# images, src trees, etc are located.
 output_directory: "/appliances"
+
+# The location of log files.
 log_directory: "/appliances/logs"
+
+# Packeges which are downloaded are put into a local cache to 
+# improve performance. This is the location of the cache.
 cache_directory: "/appliances/cache"
+
+# A temporary directory for an work products which are needed during the
+# build process
 temp_directory: "/tmp"
+
+# This is a template file for building a complete kicksart
+# file from partial information in the appliance.yml file.
 kickstart_template: "./kickstart.tmpl"
  
-# Amazon Information
+
+##############################################
+# Amazon Configuration Information
+# 
+# Modify any of the following setting with the 
+# Amazon EC2 information if you 
+# wish to bundle and push changes up
+# to EC2
+##############################################
 aws_private_key: "pk-XXXX.pem"
 aws_cert: "cert-XXXX.pem"
 aws_key: "XXXXX" 
 aws_secret_key: "XXXXX"
 aws_account_number: "XXXX"
 
-# The following is for cobbler integration
+
+##############################################
+# Cobbler Integration
+#
+# Modify th following settings with the cobbler
+# location and credentials if you wish to push
+# an image into Cobbler for provisioning.
+#
+# See https://fedorahosted.org/cobbler/wiki/KoanVirtualImageCloning
+##############################################
 cobbler_hostname: localhost
 cobbler_user: testing
 cobbler_password: testing

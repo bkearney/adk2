@@ -4,10 +4,14 @@ bits to function. But.. it is good enough to be criticized.
 
 SETUP
 =====
-* yum install pungi git hg PyYAML
+* yum install pungi git PyYAML python-cheetah
 * If you plan to use the EC2 bits:
 ** Install the ami tools from http://developer.amazonwebservices.com/connect/entry.jspa?externalID=368
+*** The RPMs are the preferred installation. 
+    If you use the zip file, ensure that the ec2-ami-tools***/bin/ directory is in your path and that the
+    EC2_HOME directory is setup as defined in the readme-install.txt file.
 ** Install the ec2 api tools: http://developer.amazonwebservices.com/connect/entry.jspa?externalID=351&categoryID=88
+* The location of this file is the ADK_HOME directory. 
 * change to the ADK_HOME directory
 * copy adk.yml.example to adk.yml
 * copy appliance.yml.example to appliance.yml

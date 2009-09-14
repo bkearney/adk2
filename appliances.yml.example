@@ -1,4 +1,19 @@
+##############################################
+# Example Appliances
+# 
+# There are three main examples below.
+# - test: Uses a local kickstart file
+# - live: Uses a network based kickstart file
+# - jeos: Defines packages and partitions in 
+#         the appliance definitions
+##############################################
+
 ---
+# This appliance uses a local kickstart file
+# and defines the infomration necessary to push
+# the content up to EC2.
+# You could override this and push this to 
+# EC2 using 'adk ec2upload  test'
     name: test
     kickstart: "test.ks"
     memory: "512"
@@ -9,9 +24,16 @@
     ec2kernel: testkernel
     ec2ramdisk: testrd
 ---
+# This appliance pulls down the fedora live cd kickstart file. You 
+# could build a livecd of this by executing
+# 'adk livecd live'
     name: live
     kickstart: "http://git.fedorahosted.org/git/spin-kickstarts.git?p=spin-kickstarts.git;a=blob_plain;f=fedora-live-base.ks;hb=986c7b7555d42b12474d15fa2c3b5a3f3d88f6a9"
 ---
+# This appliance defines basic kickstart information which will be used
+# by the kickstart template, but does not define the 
+# ec2 upload credentials from above. An appliance could be built with this
+# by executing 'adk build jeos'
     name: jeos
     memory: "512"
     cpus: "1"  
@@ -63,8 +85,12 @@
         repos:
             - name: "f11"
               mirrorlist: "http://mirrors.fedoraproject.org/mirrorlist?repo=fedora-11&arch=$basearch"
+            - name: "f11-source"
+              mirrorlist: "http://mirrors.fedoraproject.org/mirrorlist?repo=fedora-source-11&arch=$basearch"              
             - name: "f11-updates"
               mirrorlist: "http://mirrors.fedoraproject.org/mirrorlist?repo=updates-released-f11&arch=$basearch"
+            - name: "f11-updates-source"
+              mirrorlist: "http://mirrors.fedoraproject.org/mirrorlist?repo=updates-released-source-f11&arch=$basearch"              
         partitions:
             - root: "/"
               size: 1500
